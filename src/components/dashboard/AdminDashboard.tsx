@@ -59,12 +59,12 @@ const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6">
+    <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard Administrativo</h1>
-            <p className="text-gray-600">Gerencie usuários e anúncios da plataforma</p>
+            <p className="text-gray-600">Visão geral da plataforma</p>
           </div>
           <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
             <Settings className="w-4 h-4 mr-2" />
@@ -91,126 +91,69 @@ const AdminDashboard: React.FC = () => {
           ))}
         </div>
 
-        {/* Users Management */}
-        <Card className="shadow-lg border-0">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Users className="w-5 h-5 mr-2" />
-              Gerenciar Usuários
-            </CardTitle>
-            <CardDescription>
-              Visualize e gerencie todos os usuários da plataforma
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Nome</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Email</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Tipo</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium">{user.name}</td>
-                      <td className="py-3 px-4 text-gray-600">{user.email}</td>
-                      <td className="py-3 px-4">
-                        <Badge variant={user.role === 'fornecedor' ? 'default' : 'secondary'}>
-                          {user.role}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Badge variant={user.status === 'ativo' ? 'default' : 'destructive'}>
-                          {user.status}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleUserStatus(user.id)}
-                          className="mr-2"
-                        >
-                          {user.status === 'ativo' ? (
-                            <UserX className="w-4 h-4 mr-1" />
-                          ) : (
-                            <UserCheck className="w-4 h-4 mr-1" />
-                          )}
-                          {user.status === 'ativo' ? 'Desativar' : 'Ativar'}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Recent Activity Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Recent Users */}
+          <Card className="shadow-lg border-0">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Users className="w-5 h-5 mr-2" />
+                Usuários Recentes
+              </CardTitle>
+              <CardDescription>
+                Últimos usuários cadastrados
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {users.slice(0, 3).map((user) => (
+                  <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">{user.name}</p>
+                      <p className="text-sm text-gray-600">{user.email}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={user.role === 'fornecedor' ? 'default' : 'secondary'}>
+                        {user.role}
+                      </Badge>
+                      <Badge variant={user.status === 'ativo' ? 'default' : 'destructive'}>
+                        {user.status}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Advertisements Management */}
-        <Card className="shadow-lg border-0">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <FileText className="w-5 h-5 mr-2" />
-              Gerenciar Anúncios
-            </CardTitle>
-            <CardDescription>
-              Controle todos os anúncios publicados na plataforma
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Título</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Fornecedor</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Data</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {advertisements.map((ad) => (
-                    <tr key={ad.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium">{ad.title}</td>
-                      <td className="py-3 px-4 text-gray-600">{ad.provider}</td>
-                      <td className="py-3 px-4">
-                        <Badge variant={ad.status === 'ativo' ? 'default' : 'destructive'}>
-                          {ad.status}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-4 text-gray-600">{ad.createdAt}</td>
-                      <td className="py-3 px-4">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleAdStatus(ad.id)}
-                          className="mr-2"
-                        >
-                          {ad.status === 'ativo' ? (
-                            <EyeOff className="w-4 h-4 mr-1" />
-                          ) : (
-                            <Eye className="w-4 h-4 mr-1" />
-                          )}
-                          {ad.status === 'ativo' ? 'Desativar' : 'Ativar'}
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          Editar
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Recent Advertisements */}
+          <Card className="shadow-lg border-0">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <FileText className="w-5 h-5 mr-2" />
+                Anúncios Recentes
+              </CardTitle>
+              <CardDescription>
+                Últimos anúncios publicados
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {advertisements.map((ad) => (
+                  <div key={ad.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">{ad.title}</p>
+                      <p className="text-sm text-gray-600">{ad.provider}</p>
+                    </div>
+                    <Badge variant={ad.status === 'ativo' ? 'default' : 'destructive'}>
+                      {ad.status}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
