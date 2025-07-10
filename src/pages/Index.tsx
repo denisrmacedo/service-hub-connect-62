@@ -9,10 +9,10 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Navbar from '@/components/navigation/Navbar';
 
 const Index: React.FC = () => {
-  const { user, login, logout } = useAuth();
+  const { user, login, logout, forgotPassword } = useAuth();
 
   if (!user) {
-    return <LoginForm onLogin={login} />;
+    return <LoginForm onLogin={login} onForgotPassword={forgotPassword} />;
   }
 
   // Render admin with special layout
