@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Users, Search, UserCheck, UserX, Eye, Mail } from 'lucide-react';
+import { Users, Search, UserCheck, UserX, Eye, Mail, Plus } from 'lucide-react';
 
 interface User {
   id: string;
@@ -101,6 +100,10 @@ const UsersList: React.FC = () => {
             </h1>
             <p className="text-gray-600">Visualize e gerencie todos os usuários da plataforma</p>
           </div>
+          <Button className="flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            Cadastrar Usuário
+          </Button>
         </div>
 
         {/* Stats Cards */}
