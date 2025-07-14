@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
   id: string;
@@ -32,7 +32,29 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Verificar se existe um usuário salvo no localStorage ao inicializar
+  useEffect(() => {
+    const checkRememberedUser = () => {
+      try {
+        const rememberedUser = localStorage.getItem('rememberedUser');
+        if (rememberedUser) {
+          const userData = JSON.parse(rememberedUser);
+          console.log('Usuario lembrado encontrado:', userData);
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error('Erro ao recuperar usuário salvo:', error);
+        // Limpar localStorage se houver erro na leitura
+        localStorage.removeItem('rememberedUser');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkRememberedUser();
+  }, []);
 
   const login = async (email: string, password: string, remember: boolean) => {
     setIsLoading(true);
@@ -53,7 +75,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(mockUser);
     
     if (remember) {
+      console.log('Salvando usuário no localStorage:', mockUser);
       localStorage.setItem('rememberedUser', JSON.stringify(mockUser));
+    } else {
+      // Se não marcou "lembrar", remover dados salvos anteriormente
+      localStorage.removeItem('rememberedUser');
     }
     
     setIsLoading(false);
@@ -62,6 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('rememberedUser');
+    console.log('Usuário deslogado e dados removidos do localStorage');
   };
 
   const forgotPassword = async (email: string) => {

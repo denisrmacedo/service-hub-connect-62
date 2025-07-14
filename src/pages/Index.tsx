@@ -10,7 +10,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Navbar from '@/components/navigation/Navbar';
 
 const Index: React.FC = () => {
-  const { user, login, logout, forgotPassword } = useAuth();
+  const { user, login, logout, forgotPassword, isLoading } = useAuth();
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleForgotPassword = () => {
@@ -24,6 +24,18 @@ const Index: React.FC = () => {
   const handleForgotPasswordSubmit = async (email: string) => {
     await forgotPassword(email);
   };
+
+  // Mostrar loading enquanto verifica usuário salvo
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-green-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     if (showForgotPassword) {
