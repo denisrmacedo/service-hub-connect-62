@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import LoginForm from '@/components/auth/LoginForm';
+import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 import AdminDashboard from '@/components/dashboard/AdminDashboard';
 import ProviderDashboard from '@/components/dashboard/ProviderDashboard';
 import ClientDashboard from '@/components/dashboard/ClientDashboard';
@@ -10,9 +11,36 @@ import Navbar from '@/components/navigation/Navbar';
 
 const Index: React.FC = () => {
   const { user, login, logout, forgotPassword } = useAuth();
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const handleForgotPassword = () => {
+    setShowForgotPassword(true);
+  };
+
+  const handleBackToLogin = () => {
+    setShowForgotPassword(false);
+  };
+
+  const handleForgotPasswordSubmit = async (email: string) => {
+    await forgotPassword(email);
+  };
 
   if (!user) {
-    return <LoginForm onLogin={login} onForgotPassword={forgotPassword} />;
+    if (showForgotPassword) {
+      return (
+        <ForgotPasswordForm 
+          onForgotPassword={handleForgotPasswordSubmit}
+          onBackToLogin={handleBackToLogin}
+        />
+      );
+    }
+    
+    return (
+      <LoginForm 
+        onLogin={login} 
+        onForgotPassword={handleForgotPassword} 
+      />
+    );
   }
 
   // Render admin with special layout

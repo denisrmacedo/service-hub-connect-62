@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface LoginFormProps {
   onLogin: (email: string, password: string, remember: boolean) => void;
-  onForgotPassword: (email: string) => void;
+  onForgotPassword: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onForgotPassword }) => {
@@ -42,18 +42,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onForgotPassword }) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleForgotPassword = () => {
-    if (!email) {
-      toast({
-        title: "Email necessário",
-        description: "Digite seu email para recuperar a senha",
-        variant: "destructive"
-      });
-      return;
-    }
-    onForgotPassword(email);
   };
 
   return (
@@ -117,7 +105,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onForgotPassword }) => {
               </div>
               <button
                 type="button"
-                onClick={handleForgotPassword}
+                onClick={onForgotPassword}
                 className="text-sm text-blue-600 hover:text-blue-800 font-medium"
               >
                 Esqueci a senha
