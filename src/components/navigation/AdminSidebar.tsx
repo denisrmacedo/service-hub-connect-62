@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Users, FileText, UserCheck, Home } from 'lucide-react';
@@ -6,6 +5,7 @@ import { Users, FileText, UserCheck, Home } from 'lucide-react';
 const AdminSidebar: React.FC = () => {
   const menuItems = [
     { path: '/admin', label: 'Dashboard', icon: Home },
+    { path: '/admin/usuarios', label: 'Usuários', icon: Users },
     { path: '/admin/fornecedores', label: 'Fornecedores', icon: UserCheck },
     { path: '/admin/anuncios', label: 'Anúncios', icon: FileText },
     { path: '/admin/clientes', label: 'Clientes', icon: Users },
